@@ -10,8 +10,12 @@
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
-    "eslint": "^9.0.0",
     "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.1",
+    "globals": "^15.0.0"
   },
   "repository": {
     "type": "git",
