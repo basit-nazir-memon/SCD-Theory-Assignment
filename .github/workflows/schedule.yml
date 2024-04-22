@@ -2,7 +2,7 @@ name: Scheduled Tasks
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Run daily at midnight
+    - cron: '25 12 * * *'  # Run daily at midnight
 
 jobs:
   maintenance:
