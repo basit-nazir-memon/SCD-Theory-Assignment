@@ -2,7 +2,7 @@ name: Scheduled Tasks
 
 on:
   schedule:
-    - cron: '25 12 * * *'  # Run daily at midnight
+    - cron: '35 20 * * *'
 
 jobs:
   maintenance:
@@ -20,5 +20,4 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run maintenance tasks
-        run: npm run maintenance
+      # Add steps for running maintenance tasks, data backups, etc.
