@@ -2,14 +2,14 @@ name: Scheduled Tasks
 
 on:
   schedule:
-    - cron: '35 20 * * *'
+    - cron: '20 23 * * *'
 
 jobs:
   maintenance:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Set up Node.js
@@ -19,5 +19,3 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
-      # Add steps for running maintenance tasks, data backups, etc.
