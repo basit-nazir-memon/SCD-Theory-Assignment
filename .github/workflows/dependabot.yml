@@ -2,7 +2,7 @@ name: Dependency Updates
 
 on:
   schedule:
-    - cron: '30 17 * * 1-6'  # Run weekly on Monday at midnight
+    - cron: '40 19 * * 1-6'  # Run weekly on Monday at midnight
 
 jobs:
   dependency_updates:
