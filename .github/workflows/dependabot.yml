@@ -1,11 +1,29 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+name: Dependency Updates
 
-version: 2
-updates:
-  - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/" # Location of package manifests
-    schedule:
-      interval: "weekly"
+on:
+  schedule:
+    - cron: '30 17 * * 1-6'  # Run weekly on Monday at midnight
+
+jobs:
+  dependency_updates:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Dependabot
+        uses: dependabot/dependabot-core@v0.140.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          directory: '/'
+          package_manager: 'npm'
+          update_schedule: 'weekly'
