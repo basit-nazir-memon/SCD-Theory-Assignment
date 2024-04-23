@@ -2,7 +2,7 @@ name: Scheduled Tasks
 
 on:
   schedule:
-    - cron: '30 11 * * 1-6'
+    - cron: '45 18 * * 1-6'
 
 jobs:
   maintenance:
