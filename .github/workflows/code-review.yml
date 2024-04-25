@@ -1,0 +1,38 @@
+name: Code Review Workflow
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  code-review:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: |
+          npm install
+          npm install eslint
+
+      - name: Install Istanbul to check code coverage in code standards
+        run: npm install istanbul
+
+      - name: Run Istanbul
+        run: npx istanbul cover run.js
+
+      - name: Check for security vulnerabilities
+        run: npm audit --audit-level=high || echo "Audit found issues but continuing"
+
+      - name: Run ESLint for code linting
+        run: npm run lint > lint_errors.txt || true
+
+      - name: Display ESLint errors
+        run: cat lint_errors.txt

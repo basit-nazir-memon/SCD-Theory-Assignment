@@ -1,0 +1,36 @@
+name: Dependency Updates
+
+on:
+ # schedule:
+  #  - cron: '0 0 * * *' # Run every day
+  push:
+    branches:
+      - main
+
+jobs:
+  dependency-updates:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Custom Dependency Update Script
+        run: |
+           npm update
+
+      - name: Run Tests
+        run: npm test
+
+      - name: Enforce Versioning Policies
+        run: |
+          # npm audit to check for compliance to versioning policies
+          npm audit --audit-level=high || echo "Audit found issues but continuing"

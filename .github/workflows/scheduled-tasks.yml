@@ -1,0 +1,53 @@
+name: Scheduled tasks
+
+on:
+  push:
+  #schedule:
+   # - cron: '0 0 * * *' # Run daily at midnight
+
+jobs:
+  maintenance:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Update dependencies
+        run: npm update
+
+      # Create data directory if it doesn't exist
+      - name: Create data directory
+        run: mkdir -p data
+
+      # Backup data
+      - name: Backup data
+        run: |
+          cp -r src data/
+          echo "Data backup completed successfully"
+          ls data
+
+      # Notification and logging steps
+      - name: Send notifications
+        run: echo "Scheduled maintenance tasks completed successfully"
+
+      - name: Save logs
+        run: |
+          echo "Scheduled maintenance tasks completed successfully" > scheduled_tasks_logs.txt
+          ls -l # Listing files in the workspace directory for debugging
+          cat scheduled_tasks_logs.txt
+
+      # Upload logs as an artifact
+      - name: Upload logs
+        uses: actions/upload-artifact@v2
+        with:
+          name: scheduled-tasks-logs
+          path: scheduled_tasks_logs.txt
