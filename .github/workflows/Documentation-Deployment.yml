@@ -28,7 +28,8 @@ jobs:
         run: npx jsdoc -c jsdoc.config.json
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: JamesIves/github-pages-deploy-action@4.1.3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./documentation
+          branch: gh-pages
+          folder: documentation
+          token: ${{ secrets.GITHUB_TOKEN }}
