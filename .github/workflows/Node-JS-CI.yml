@@ -34,7 +34,6 @@ jobs:
 
       - name: Run tests
         run: npm test --if-present
-        run: echo "Tests Passed"
 
       - name: Code linting
         run: npx eslint run.js
