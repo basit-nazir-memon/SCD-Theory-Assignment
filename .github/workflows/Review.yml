@@ -1,69 +1,69 @@
-# name: Code Review Workflow
+name: Code Review Workflow
 
-# on:
-#   push:
-#     branches:
-#       - main
-#   pull_request:
-#     branches:
-#       - main
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
-# jobs:
-#   code-review:
-#     runs-on: ubuntu-latest
+jobs:
+  code-review:
+    runs-on: ubuntu-latest
 
-#     strategy:
-#       matrix:
-#         node-version: [16.x]
+    strategy:
+      matrix:
+        node-version: [16.x]
 
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-#       - name: Use Node.js ${{ matrix.node-version }}
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: ${{ matrix.node-version }}
-#           cache: 'npm'
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
       
-#       - name: Install dependencies
-#         run: npm install
+      - name: Install dependencies
+        run: npm install
 
-#       - name: Run tests
-#         run: npm test --if-present
+      - name: Run tests
+        run: npm test --if-present
 
-#       - name: Check coding standards
-#         run: |
-#           echo "Running Lint"
-#           npx eslint run.js
+      - name: Check coding standards
+        run: |
+          echo "Running Lint"
+          npx eslint run.js
 
-#       - name: Analyze code quality metrics
-#         id: code-quality
-#         run: |
-#           echo "Analyzing Code"
-#           # sonar-scanner \
-#           #   -Dsonar.projectKey=<YOUR_PROJECT_KEY> \
-#           #   -Dsonar.sources=. \
-#           #   -Dsonar.host.url=<SONARQUBE_URL> \
-#           #   -Dsonar.login=<SONARQUBE_TOKEN> --if-present
-#         env:
-#           CODE_QUALITY_METRICS_PASS: ${{ job.status == 'success' }}
+      - name: Analyze code quality metrics
+        id: code-quality
+        run: |
+          echo "Analyzing Code"
+          # sonar-scanner \
+          #   -Dsonar.projectKey=<YOUR_PROJECT_KEY> \
+          #   -Dsonar.sources=. \
+          #   -Dsonar.host.url=<SONARQUBE_URL> \
+          #   -Dsonar.login=<SONARQUBE_TOKEN> --if-present
+        env:
+          CODE_QUALITY_METRICS_PASS: ${{ job.status == 'success' }}
 
-#       - name: Scan for security vulnerabilities
-#         id: security-scan
-#         run: |
-#           echo "Running Security Scan"
-#           npm install -g snyk
-#           # npx snyk test
-#           npm run test --if-present
-#         env:
-#           SECURITY_VULNERABILITIES_PASS: ${{ job.status == 'success' }}
+      - name: Scan for security vulnerabilities
+        id: security-scan
+        run: |
+          echo "Running Security Scan"
+          npm install -g snyk
+          # npx snyk test
+          npm run test --if-present
+        env:
+          SECURITY_VULNERABILITIES_PASS: ${{ job.status == 'success' }}
 
-#       - name: Provide feedback on pull request
-#         if: github.event_name == 'pull_request'
-#         env:
-#           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#         run: |
-#           echo "Code analysis and security scan results:"
-#           echo "..."
-#           gh pr comment ${{ github.event.number }} --body "Code analysis and security scan results: \n ..."
+      - name: Provide feedback on pull request
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Code analysis and security scan results:"
+          echo "..."
+          gh pr comment ${{ github.event.number }} --body "Code analysis and security scan results: \n ..."
