@@ -36,5 +36,6 @@ jobs:
       - name: Deploy to Vercel Production
         run: |
           npm install --global vercel
-          vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
           echo "Deployment Successfull"
+
+# vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
