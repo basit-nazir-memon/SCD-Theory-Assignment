@@ -60,6 +60,8 @@ jobs:
           SECURITY_VULNERABILITIES_PASS: ${{ job.status == 'success' }}
 
       - name: Provide feedback on pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "Code analysis and security scan results:"
           echo "..."
