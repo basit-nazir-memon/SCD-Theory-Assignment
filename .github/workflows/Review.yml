@@ -60,6 +60,7 @@ jobs:
           SECURITY_VULNERABILITIES_PASS: ${{ job.status == 'success' }}
 
       - name: Provide feedback on pull request
+        if: github.event_name == 'pull_request'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
