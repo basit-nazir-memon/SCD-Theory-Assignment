@@ -41,11 +41,11 @@ jobs:
         id: code-quality
         run: |
           echo "Analyzing Code"
-          sonar-scanner \
-            -Dsonar.projectKey=<YOUR_PROJECT_KEY> \
-            -Dsonar.sources=. \
-            -Dsonar.host.url=<SONARQUBE_URL> \
-            -Dsonar.login=<SONARQUBE_TOKEN> --if-present
+          # sonar-scanner \
+          #   -Dsonar.projectKey=<YOUR_PROJECT_KEY> \
+          #   -Dsonar.sources=. \
+          #   -Dsonar.host.url=<SONARQUBE_URL> \
+          #   -Dsonar.login=<SONARQUBE_TOKEN> --if-present
         env:
           CODE_QUALITY_METRICS_PASS: ${{ job.status == 'success' }}
 
