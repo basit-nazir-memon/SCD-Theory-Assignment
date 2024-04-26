@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Dependabot Action
-        uses: dependabot/dependabot-core
+        uses: dependabot/dependabot-core@0.95.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           directory: '/'  
