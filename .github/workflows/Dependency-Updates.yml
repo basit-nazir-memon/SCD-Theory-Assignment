@@ -1,18 +1,22 @@
-version: 2
-updates:
-  - package-ecosystem: npm
-    directory: /
-    schedule:
-      interval: weekly
-    allow:
-      - dependency-name: "*"
-        dependency-type: "all"
-        schedules:
-          - interval: weekly
-            days: [friday]
+name: Dependabot
 
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
+on:
+  schedule:
+    - cron: '0 3 * * 5' # Runs every Friday at 3 AM UTC
+  push:
+    branches:
+      - main
 
+jobs:
+  dependabot:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Dependabot Action
+        uses: dependabot/dependabot-core@v0.135.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          directory: '/'  
