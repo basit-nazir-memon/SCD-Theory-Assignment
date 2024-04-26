@@ -1,0 +1,73 @@
+name: Code Review Workflow
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  code-review:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test --if-present
+
+      - name: Check coding standards
+        run: |
+          echo "Running Lint"
+          npx eslint run.js
+
+      - name: Analyze code quality metrics
+        id: code-quality
+        run: |
+          echo "Analyzing Code"
+          sonar-scanner \
+            -Dsonar.projectKey=<YOUR_PROJECT_KEY> \
+            -Dsonar.sources=. \
+            -Dsonar.host.url=<SONARQUBE_URL> \
+            -Dsonar.login=<SONARQUBE_TOKEN> --if-present
+        env:
+          CODE_QUALITY_METRICS_PASS: ${{ job.status == 'success' }}
+
+      - name: Scan for security vulnerabilities
+        id: security-scan
+        run: |
+          npm install -g snyk
+          npx snyk test
+        env:
+          SECURITY_VULNERABILITIES_PASS: ${{ job.status == 'success' }}
+
+      - name: Provide feedback on pull request
+        run: |
+          echo "Code analysis and security scan results:"
+          echo "..."
+          gh pr comment ${{ github.event.number }} --body "Code analysis and security scan results: \n ..."
+
+      - name: Enforce required checks before merging
+        run: |
+          if [ "$CODE_QUALITY_METRICS_PASS" != "true" ]; then
+            echo "Code quality metrics check failed. Please review the code and try again."
+            exit 1
+          fi
+
+          if [ "$SECURITY_VULNERABILITIES_PASS" != "true" ]; then
+            echo "Security vulnerabilities check failed. Please review the code and try again."
+            exit 1
+          fi
