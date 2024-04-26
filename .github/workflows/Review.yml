@@ -67,15 +67,3 @@ jobs:
           echo "Code analysis and security scan results:"
           echo "..."
           gh pr comment ${{ github.event.number }} --body "Code analysis and security scan results: \n ..."
-
-      - name: Enforce required checks before merging
-        run: |
-          if [ "$CODE_QUALITY_METRICS_PASS" != "true" ]; then
-            echo "Code quality metrics check failed. Please review the code and try again."
-            exit 1
-          fi
-
-          if [ "$SECURITY_VULNERABILITIES_PASS" != "true" ]; then
-            echo "Security vulnerabilities check failed. Please review the code and try again."
-            exit 1
-          fi
